@@ -5,11 +5,11 @@ cd $SOURCEROM
 PATH=/home/$CURRENTUSER/bin:$PATH
 su -c "/home/$CURRENTUSER/bin/repo sync --force-sync" $CURRENTUSER
 
-sudo -u $CURRENTUSER sed -i "/PLATFORM_SECURITY_PATCH :=/c\      PLATFORM_SECURITY_PATCH := $PATCHDATE" /home/nebras30/aicp10/build/core/version_defaults.mk
+su -c "sed -i "/PLATFORM_SECURITY_PATCH :=/c\      PLATFORM_SECURITY_PATCH := $PATCHDATE" /home/nebras30/aicp10/build/core/version_defaults.mk" $CURRENTUSER
 
-sudo -u $CURRENTUSER git -C $SOURCEROM/kernel/xiaomi/sdm660 remote add nebrassy https://github.com/nebrassy/android_kernel_xiaomi_sdm660.git
-sudo -u $CURRENTUSER git -C $SOURCEROM/kernel/xiaomi/sdm660 fetch nebrassy
-sudo -u $CURRENTUSER git -C $SOURCEROM/kernel/xiaomi/sdm660 checkout nebrassy/MIUI-r38-n7
+su -c "git -C $SOURCEROM/kernel/xiaomi/sdm660 remote add nebrassy https://github.com/nebrassy/android_kernel_xiaomi_sdm660.git" $CURRENTUSER
+su -c "git -C $SOURCEROM/kernel/xiaomi/sdm660 fetch nebrassy" $CURRENTUSER
+su -c "git -C $SOURCEROM/kernel/xiaomi/sdm660 checkout nebrassy/MIUI-r38-n7" $CURRENTUSER
 
 sudo -u $CURRENTUSER sed -i "$ i\BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive" $SOURCEROM/device/xiaomi/sdm660-common/BoardConfigCommon.mk
 
