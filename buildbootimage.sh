@@ -3,7 +3,7 @@ PATCHDATE=$(sudo grep ro.build.version.security_patch= /mnt/systemn7/system/buil
 cd $SOURCEROM
 
 PATH=/home/$CURRENTUSER/bin:$PATH
-su -c '/home/$CURRENTUSER/bin/repo sync --force-sync' $CURRENTUSER
+su -c "/home/$CURRENTUSER/bin/repo sync --force-sync" $CURRENTUSER
 
 sudo -u $CURRENTUSER sed -i "/PLATFORM_SECURITY_PATCH :=/c\      PLATFORM_SECURITY_PATCH := $PATCHDATE" /home/nebras30/aicp10/build/core/version_defaults.mk
 
