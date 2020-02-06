@@ -311,7 +311,7 @@ mv vendorn7.img $OUTP/zip/vendor_new.img
 mv systemn7.img $OUTP/zip/system_new.img
 
 cd $OUTP/zip
-zip -ry $OUTP/MIUI_11_jasmine_sprout_$ROMVERSION.zip *
+zip -ry $OUTP/10_MIUI_11_jasmine_sprout_$ROMVERSION.zip *
 cd $CURRENTDIR
 
 rm systema2.img
