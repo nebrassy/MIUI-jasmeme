@@ -259,6 +259,17 @@ rm -rf $PVENDOR/etc/acdbdata
 cp -Raf $SVENDOR/etc/acdbdata $PVENDOR/etc/acdbdata
 
 
+#statusbar/corner
+rm -rf $PVENDOR/app/NotchOverlay
+cp -Raf $FILES/overlay/DevicesOverlay.apk $PVENDOR/overlay/DevicesOverlay.apk
+cp -Raf $FILES/overlay/DevicesAndroidOverlay.apk $PVENDOR/overlay/DevicesAndroidOverlay.apk
+chmod 644 $PVENDOR/overlay/DevicesOverlay.apk
+chmod 644 $PVENDOR/overlay/DevicesAndroidOverlay.apk
+chown -hR root:root $PVENDOR/overlay/DevicesOverlay.apk
+chown -hR root:root $PVENDOR/overlay/DevicesAndroidOverlay.apk
+setfattr -h -n security.selinux -v u:object_r:vendor_overlay_file:s0 $PVENDOR/overlay/DevicesOverlay.apk
+setfattr -h -n security.selinux -v u:object_r:vendor_overlay_file:s0 $PVENDOR/overlay/DevicesAndroidOverlay.apk
+
 #add this to line 452 at $PVENDOR/etc/init/hw/init.qcom.rc
 #    exec_background u:object_r:system_file:s0 -- /system/bin/bootctl mark-boot-successful
 sed -i "452 i \    exec_background u:object_r:system_file:s0 -- /system/bin/bootctl mark-boot-successful" $PVENDOR/etc/init/hw/init.qcom.rc
