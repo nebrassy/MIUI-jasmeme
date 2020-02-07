@@ -5,13 +5,13 @@ cd $SOURCEROM
 PATH=/home/$CURRENTUSER/bin:$PATH
 su -c "/home/$CURRENTUSER/bin/repo sync --force-sync" $CURRENTUSER
 
-su -c "sed -i "/PLATFORM_SECURITY_PATCH :=/c\      PLATFORM_SECURITY_PATCH := $PATCHDATE" /home/nebras30/aicp10/build/core/version_defaults.mk" $CURRENTUSER
+su -c "sed -i \"/PLATFORM_SECURITY_PATCH :=/c\      PLATFORM_SECURITY_PATCH := $PATCHDATE\" /home/nebras30/aicp10/build/core/version_defaults.mk" $CURRENTUSER
 
 su -c "git -C $SOURCEROM/kernel/xiaomi/sdm660 remote add nebrassy https://github.com/nebrassy/android_kernel_xiaomi_sdm660.git" $CURRENTUSER
 su -c "git -C $SOURCEROM/kernel/xiaomi/sdm660 fetch nebrassy" $CURRENTUSER
 su -c "git -C $SOURCEROM/kernel/xiaomi/sdm660 checkout nebrassy/MIUI-r38-n7" $CURRENTUSER
 
-sudo -u $CURRENTUSER sed -i "$ i\BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive" $SOURCEROM/device/xiaomi/sdm660-common/BoardConfigCommon.mk
+su -c "sed -i '$ i\BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive' $SOURCEROM/device/xiaomi/sdm660-common/BoardConfigCommon.mk" $CURRENTUSER
 
 
 su -c 'source build/envsetup.sh; lunch aicp_jasmine_sprout-userdebug; mka bootimage; mka libwifi-hal' $CURRENTUSER
@@ -20,7 +20,7 @@ cp -f out/target/product/jasmine_sprout/vendor/lib64/libwifi-hal.so $OUTP/libwif
 cp -f out/target/product/jasmine_sprout/vendor/lib/libwifi-hal.so $OUTP/libwifi-hal32.so
 
 cp -f out/target/product/jasmine_sprout/boot.img $OUTP/zip/boot.img
-git -C $SOURCEROM/device/xiaomi/sdm660-common reset --hard
-git -C $SOURCEROM/build/core reset --hard
+su -c "git -C $SOURCEROM/device/xiaomi/sdm660-common reset --hard" $CURRENTUSER
+su -c "git -C $SOURCEROM/build/core reset --hard" $CURRENTUSER
 
 cd $CURRENTDIR
