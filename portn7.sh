@@ -51,57 +51,43 @@ mount -o rw,noatime vendora2.img $SVENDOR
 #BUILD BOOT IMAGE
 source $CURRENTDIR/buildbootimage.sh
 
-rm -rf $PSYSTEM/cache
-cp -Rafv $SSYSTEM/cache $PSYSTEM/
-
-
-
-cp -Rafv $FILES/bootctl $PSYSTEM/system/bin/
-chmod 755 $PSYSTEM/system/bin/bootctl
-setfattr -h -n security.selinux -v u:object_r:system_file:s0 $PSYSTEM/system/bin/bootctl
-
-cp -Raf $SSYSTEM/system/lib/vndk-29/android.hardware.boot@1.0.so $PSYSTEM/system/lib/vndk-29/android.hardware.boot@1.0.so
-cp -Raf $SSYSTEM/system/lib64/vndk-29/android.hardware.boot@1.0.so $PSYSTEM/system/lib64/vndk-29/android.hardware.boot@1.0.so
-cp -Raf $SSYSTEM/system/lib64/android.hardware.boot@1.0.so $PSYSTEM/system/lib64/android.hardware.boot@1.0.so
-
 cp -Raf $SVENDOR/etc/MIUI_DualCamera_watermark.png $PVENDOR/etc/MIUI_DualCamera_watermark.png
 
 rm -rf $PSYSTEM/system/priv-app/Updater
 
-mv $PSYSTEM/system/etc/device_features/lavender.xml $PSYSTEM/system/etc/device_features/jasmine_sprout.xml
-mv $PVENDOR/etc/device_features/lavender.xml $PVENDOR/etc/device_features/jasmine_sprout.xml
+mv $PSYSTEM/system/etc/device_features/lavender.xml $PSYSTEM/system/etc/device_features/wayne.xml
+mv $PVENDOR/etc/device_features/lavender.xml $PVENDOR/etc/device_features/wayne.xml
 
 
 sed -i "/persist.camera.HAL3.enabled=/c\persist.camera.HAL3.enabled=1
 /persist.vendor.camera.HAL3.enabled=/c\persist.vendor.camera.HAL3.enabled=1
-/ro.product.model=/c\ro.product.model=Mi A2
+/ro.product.model=/c\ro.product.model=Mi 6x
 /ro.build.id=/c\ro.build.id=MIUI 11 by Nebrassy
-/persist.vendor.camera.exif.model=/c\persist.vendor.camera.exif.model=Mi A2
-/ro.product.name=/c\ro.product.name=jasmine
-/ro.product.device=/c\ro.product.device=jasmine_sprout
-/ro.build.product=/c\ro.build.product=jasmine
-/ro.product.system.device=/c\ro.product.system.device=jasmine_sprout
-/ro.product.system.model=/c\ro.product.system.model=Mi A2
-/ro.product.system.name=/c\ro.product.system.name=jasmine
+/persist.vendor.camera.exif.model=/c\persist.vendor.camera.exif.model=Mi 6x
+/ro.product.name=/c\ro.product.name=wayne
+/ro.product.device=/c\ro.product.device=wayne
+/ro.build.product=/c\ro.build.product=wayne
+/ro.product.system.device=/c\ro.product.system.device=wayne
+/ro.product.system.model=/c\ro.product.system.model=Mi 6x
+/ro.product.system.name=/c\ro.product.system.name=wayne
 /ro.miui.notch=/c\ro.miui.notch=0
-/persist.vendor.camera.model=/c\persist.vendor.camera.model=Mi A2" $PSYSTEM/system/build.prop
+/persist.vendor.camera.model=/c\persist.vendor.camera.model=Mi 6x" $PSYSTEM/system/build.prop
 
 
 sed -i "/ro.build.characteristics=/c\ro.build.characteristics=nosdcard" $PSYSTEM/system/product/build.prop
 
 
-sed -i "/ro.miui.has_cust_partition=/c\ro.miui.has_cust_partition=false" $PSYSTEM/system/etc/prop.default
 
 
-sed -i "/ro.product.vendor.model=/c\ro.product.vendor.model=Mi A2
-/ro.product.vendor.name=/c\ro.product.vendor.name=jasmine
-/ro.product.vendor.device=/c\ro.product.vendor.device=jasmine" $PVENDOR/build.prop
+sed -i "/ro.product.vendor.model=/c\ro.product.vendor.model=Mi 6x
+/ro.product.vendor.name=/c\ro.product.vendor.name=wayne
+/ro.product.vendor.device=/c\ro.product.vendor.device=wayne" $PVENDOR/build.prop
 
 
-sed -i "/ro.product.odm.device=/c\ro.product.odm.device=jasmine_sprout
-/ro.product.odm.model=/c\ro.product.odm.model=Mi A2
-/ro.product.odm.device=/c\ro.product.odm.device=jasmine_sprout
-/ro.product.odm.name=/c\ro.product.odm.name=jasmine" $PVENDOR/odm/etc/build.prop
+sed -i "/ro.product.odm.device=/c\ro.product.odm.device=wayne
+/ro.product.odm.model=/c\ro.product.odm.model=Mi 6x
+/ro.product.odm.device=/c\ro.product.odm.device=wayne
+/ro.product.odm.name=/c\ro.product.odm.name=wayne" $PVENDOR/odm/etc/build.prop
 
 
 rm -rf $PVENDOR/firmware
@@ -117,44 +103,14 @@ setfattr -h -n security.selinux -v u:object_r:vendor_configs_file:s0 $PVENDOR/et
 chown -hR root:root $PVENDOR/etc/fstab.qcom
 
 
-cp -Rafv $SVENDOR/bin/hw/android.hardware.boot@1.0-service $PVENDOR/bin/hw/android.hardware.boot@1.0-service
-cp -Rafv $SVENDOR/etc/init/android.hardware.boot@1.0-service.rc $PVENDOR/etc/init/android.hardware.boot@1.0-service.rc
-cp -Rafv $SVENDOR/lib/hw/bootctrl.sdm660.so $PVENDOR/lib/hw/bootctrl.sdm660.so
-cp -Rafv $SVENDOR/lib/hw/android.hardware.boot@1.0-impl.so $PVENDOR/lib/hw/android.hardware.boot@1.0-impl.so
-cp -Rafv $SVENDOR/lib64/hw/bootctrl.sdm660.so $PVENDOR/lib64/hw/bootctrl.sdm660.so
-cp -Rafv $SVENDOR/lib64/hw/android.hardware.boot@1.0-impl.so $PVENDOR/lib64/hw/android.hardware.boot@1.0-impl.so
 
 
-
-# insert this at line 58 of $PVENDOR/etc/vintf/manifest.xml
- #   <hal format="hidl">
-#        <name>android.hardware.boot</name>
-#        <transport>hwbinder</transport>
-#        <version>1.0</version>
-#        <interface>
-#            <name>IBootControl</name>
-#            <instance>default</instance>
-#        </interface>
-#        <fqname>@1.0::IBootControl/default</fqname>
-#    </hal>
-
-
-sed -i "58 i \    <hal format=\"hidl\">
-58 i \        <name>android.hardware.boot</name>
-58 i \        <transport>hwbinder</transport>
-58 i \        <version>1.0</version>
-58 i \        <interface>
-58 i \            <name>IBootControl</name>
-58 i \            <instance>default</instance>
-58 i \        </interface>
-58 i \        <fqname>@1.0::IBootControl/default</fqname>
-58 i \    </hal>" $PVENDOR/etc/vintf/manifest.xml
 
 #KEYMASTER
 rm -f $PVENDOR/etc/init/android.hardware.keymaster@4.0-service-qti.rc
 cp -af $SVENDOR/etc/init/android.hardware.keymaster@3.0-service-qti.rc $PVENDOR/etc/init/android.hardware.keymaster@3.0-service-qti.rc
 
-sed -i "181 s/        <version>4.0<\/version>/        <version>3.0<\/version>/g
+sed -i "171 s/        <version>4.0<\/version>/        <version>3.0<\/version>/g
 s/4.0::IKeymasterDevice/3.0::IKeymasterDevice/g" $PVENDOR/etc/vintf/manifest.xml
 
 
@@ -209,15 +165,15 @@ cp -Raf $SSYSTEM/system/usr/idc/uinput-fpc.idc $PSYSTEM/system/usr/idc/uinput-fp
 
 #GOODSEX
 
-sed -i "477 c\        <name>vendor.goodix.hardware.fingerprint</name>" $PVENDOR/etc/vintf/manifest.xml
-sed -i "479 c\        <version>1.0</version>
-481 c\            <name>IGoodixBiometricsFingerprint</name>
-484 c\        <fqname>@1.0::IGoodixBiometricsFingerprint/default</fqname>
-485d
-486d
-487d
-488d
-489d" $PVENDOR/etc/vintf/manifest.xml
+sed -i "467 c\        <name>vendor.goodix.hardware.fingerprint</name>" $PVENDOR/etc/vintf/manifest.xml
+sed -i "469 c\        <version>1.0</version>
+471 c\            <name>IGoodixBiometricsFingerprint</name>
+474 c\        <fqname>@1.0::IGoodixBiometricsFingerprint/default</fqname>
+475d
+476d
+477d
+478d
+479d" $PVENDOR/etc/vintf/manifest.xml
 
 
 rm -rf $PSYSTEM/system/etc/firmware
@@ -241,7 +197,7 @@ sed -i "/support_dual_sd_card/c\    <bool name=\"support_dual_sd_card\">true<\/b
 /bool name=\"is_xiaomi\">/c\    <bool name=\"is_xiaomi\">true<\/bool>
 /is_hongmi/c\    <bool name=\"is_hongmi\">false<\/bool>
 /is_redmi/c\    <bool name=\"is_redmi\">false<\/bool>
-/is_18x9_ratio_screen/c\    <bool name=\"is_18x9_ratio_screen\">true<\/bool>" $PSYSTEM/system/etc/device_features/jasmine_sprout.xml
+/is_18x9_ratio_screen/c\    <bool name=\"is_18x9_ratio_screen\">true<\/bool>" $PSYSTEM/system/etc/device_features/wayne.xml
 
 
 #vendor/etc/device_features
@@ -251,7 +207,7 @@ sed -i "/support_dual_sd_card/c\    <bool name=\"support_dual_sd_card\">true<\/b
 /bool name=\"is_xiaomi\">/c\    <bool name=\"is_xiaomi\">true<\/bool>
 /is_hongmi/c\    <bool name=\"is_hongmi\">false<\/bool>
 /is_redmi/c\    <bool name=\"is_redmi\">false<\/bool>
-/is_18x9_ratio_screen/c\    <bool name=\"is_18x9_ratio_screen\">true<\/bool>" $PVENDOR/etc/device_features/jasmine_sprout.xml
+/is_18x9_ratio_screen/c\    <bool name=\"is_18x9_ratio_screen\">true<\/bool>" $PVENDOR/etc/device_features/wayne.xml
 
 
 #AUDIO
@@ -281,9 +237,6 @@ setfattr -h -n security.selinux -v u:object_r:vendor_configs_file:s0 $PVENDOR/et
 setfattr -h -n security.selinux -v u:object_r:vendor_configs_file:s0 $PVENDOR/etc/qdcm_calib_data_tianma_nt36672_fhd_video_mode_dsi_panel.xml
 
 
-#add this to line 452 at $PVENDOR/etc/init/hw/init.qcom.rc
-#    exec_background u:object_r:system_file:s0 -- /system/bin/bootctl mark-boot-successful
-sed -i "452 i \    exec_background u:object_r:system_file:s0 -- /system/bin/bootctl mark-boot-successful" $PVENDOR/etc/init/hw/init.qcom.rc
 
 sed -i "124 i \
 
@@ -311,7 +264,7 @@ mv vendorn7.img $OUTP/zip/vendor_new.img
 mv systemn7.img $OUTP/zip/system_new.img
 
 cd $OUTP/zip
-zip -ry $OUTP/10_MIUI_11_jasmine_sprout_$ROMVERSION.zip *
+zip -ry $OUTP/10_MIUI_11_wayne_$ROMVERSION.zip *
 cd $CURRENTDIR
 
 rm systema2.img

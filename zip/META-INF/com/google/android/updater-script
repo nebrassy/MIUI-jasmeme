@@ -1,6 +1,6 @@
 #ASSERT
-assert(getprop("ro.product.device") == "jasmine_sprout" || getprop("ro.build.product") == "jasmine_sprout" || getprop("ro.product.name") == "jasmine_sprout" ||
-    abort("This package is for \"jasmine_sprout\" devices; this is a \"" + getprop("ro.product.device") + "\"."););
+assert(getprop("ro.product.device") == "wayne" || getprop("ro.build.product") == "wayne" || getprop("ro.product.name") == "wayne" ||
+    abort("This package is for \"wayne\" devices; this is a \"" + getprop("ro.product.device") + "\"."););
 #UNMOUNT
 ifelse(is_mounted("/vendor"), unmount("/vendor"));
 ifelse(is_mounted("/system"), unmount("/system"));
