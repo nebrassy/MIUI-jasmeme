@@ -1,0 +1,52 @@
+#ASSERT
+assert(getprop("ro.product.device") == "jasmine_sprout" || getprop("ro.build.product") == "jasmine_sprout" || getprop("ro.product.name") == "jasmine_sprout" ||
+    abort("This package is for \"jasmine_sprout\" devices; this is a \"" + getprop("ro.product.device") + "\"."););
+#UNMOUNT
+ifelse(is_mounted("/vendor"), unmount("/vendor"));
+ifelse(is_mounted("/system"), unmount("/system"));
+show_progress(1.000000, 0);
+ui_print(" ");
+ui_print(" ");
+ui_print("           MIUI 11");
+ui_print(" ");
+ui_print("           ROMVERSION");
+ui_print(" ");
+ui_print("        DATE");
+ui_print(" ");
+ui_print("       By Nebrassy");
+ui_print(" ");
+ui_print("Based on Xiaomi.eu Mi 6x builds");
+ui_print(" ");
+ui_print("Checking config ...");
+ui_print(" ");
+package_extract_dir("install", "/tmp/install");
+set_metadata_recursive("/tmp/install", "uid", 0, "gid", 0, "dmode", 0755, "fmode", 0644);
+set_metadata_recursive("/tmp/install/bin", "uid", 0, "gid", 0, "dmode", 0755, "fmode", 0755);
+run_program("/tmp/install/bin/configure.sh");
+ui_print("Formatting system...");
+ui_print(" ");
+format("ext4", "EMMC", file_getprop("/tmp/config", "system"), "0", "/system");
+ui_print("Formatting vendor...");
+ui_print(" ");
+format("ext4", "EMMC", file_getprop("/tmp/config", "vendor"), "0", "/vendor");
+set_progress(0.200000);
+#MOUNT
+ifelse(is_mounted("/vendor"), "", mount("ext4", "EMMC", file_getprop("/tmp/config", "vendor"), "/vendor"));
+ifelse(is_mounted("/system"), "", mount("ext4", "EMMC", file_getprop("/tmp/config", "system"), "/system"));
+ui_print("Extracting system...");
+ui_print(" ");
+package_extract_file("system_new.img", file_getprop("/tmp/config", "system"));
+ui_print("Extracting vendor ..."); ui_print(" ");
+package_extract_file("vendor_new.img", file_getprop("/tmp/config", "vendor"));
+set_progress(0.700000);
+ui_print(" "); ui_print("Extracting boot image..."); ui_print(" ");
+package_extract_file("boot.img", file_getprop("/tmp/config", "boot"));
+set_progress(0.800000);
+#ROOT
+ui_print(" ");
+#BUSYBOX
+#UNMOUNT
+ifelse(is_mounted("/vendor"), unmount("/vendor"));
+ifelse(is_mounted("/system"), unmount("/system"));
+set_progress(1.000000);
+ui_print("MIUI 11 Installed");
