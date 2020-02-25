@@ -4,8 +4,8 @@ SVENDOR=/mnt/vendora2
 SSYSTEM=/mnt/systema2
 PVENDOR=/mnt/vendorn7
 PSYSTEM=/mnt/systemn7
-SOURCEROM=/home/nebras30/aicp10
 CURRENTUSER=nebras30
+SOURCEROM=/home/$CURRENTUSER/aicp10
 SD2IMG=/home/$CURRENTUSER/dev/sdat2img.py
 SCRIPTDIR=$(readlink -f "$0")
 CURRENTDIR=$(dirname "$SCRIPTDIR")
@@ -244,9 +244,8 @@ sed -i "124 i \
 124 i \    chown wifi wifi /sys/module/wlan/parameters/fwpath" $PVENDOR/etc/init/hw/init.target.rc
 
 ROMVERSION=$(grep ro.system.build.version.incremental= /mnt/systemn7/system/build.prop | sed "s/ro.system.build.version.incremental=//g"; )
-PORTDATE=$(date +%d/%m/%Y)
 sed -i "s%DATE%$(date +%d/%m/%Y)%g
-s/ROMVERSION/$ROMVERSION/g" out/zip/META-INF/com/google/android/updater-script
+s/ROMVERSION/$ROMVERSION/g" $OUTP/zip/META-INF/com/google/android/updater-script
 
 umount $PSYSTEM
 umount $PVENDOR

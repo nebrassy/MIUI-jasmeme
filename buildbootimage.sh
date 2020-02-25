@@ -1,11 +1,11 @@
-PATCHDATE=$(sudo grep ro.build.version.security_patch= /mnt/systemn7/system/build.prop | sed "s/ro.build.version.security_patch=//g"; )
+PATCHDATE=$(sudo grep ro.build.version.security_patch= $PSYSTEM/system/build.prop | sed "s/ro.build.version.security_patch=//g"; )
 
 cd $SOURCEROM
 
 PATH=/home/$CURRENTUSER/bin:$PATH
 su -c "/home/$CURRENTUSER/bin/repo sync --force-sync" $CURRENTUSER
 
-su -c "sed -i \"/PLATFORM_SECURITY_PATCH :=/c\      PLATFORM_SECURITY_PATCH := $PATCHDATE\" /home/nebras30/aicp10/build/core/version_defaults.mk" $CURRENTUSER
+su -c "sed -i \"/PLATFORM_SECURITY_PATCH :=/c\      PLATFORM_SECURITY_PATCH := $PATCHDATE\" $SOURCEROM/build/core/version_defaults.mk" $CURRENTUSER
 
 su -c "git -C $SOURCEROM/kernel/xiaomi/sdm660 remote add nebrassy https://github.com/nebrassy/android_kernel_xiaomi_sdm660.git" $CURRENTUSER
 su -c "git -C $SOURCEROM/kernel/xiaomi/sdm660 fetch nebrassy" $CURRENTUSER
