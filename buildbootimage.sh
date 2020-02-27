@@ -11,6 +11,10 @@ su -c "git -C $SOURCEROM/kernel/xiaomi/sdm660 remote add nebrassy https://github
 su -c "git -C $SOURCEROM/kernel/xiaomi/sdm660 fetch nebrassy" $CURRENTUSER
 su -c "git -C $SOURCEROM/kernel/xiaomi/sdm660 checkout nebrassy/MIUI-r38-n7" $CURRENTUSER
 
+su -c "git -C $SOURCEROM/bootable/recovery remote add aicp https://github.com/AICP/bootable_recovery.git"  $CURRENTUSER
+su -c "git -C $SOURCEROM/bootable/recovery fetch aicp" $CURRENTUSER
+su -c "git -C $SOURCEROM/bootable/recovery checkout aicp/p9.0" $CURRENTUSER
+
 su -c "sed -i '$ i\BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive' $SOURCEROM/device/xiaomi/sdm660-common/BoardConfigCommon.mk" $CURRENTUSER
 
 
