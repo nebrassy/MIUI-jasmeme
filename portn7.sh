@@ -176,6 +176,11 @@ chmod 644 $PVENDOR/lib/camera.sdm660_shim.so
 chown root:root $PVENDOR/lib/camera.sdm660_shim.so
 setfattr -h -n security.selinux -v u:object_r:vendor_file:s0 $PVENDOR/lib/camera.sdm660_shim.so
 
+#BOOTANIMATION
+cp -Raf $FILES/bootanimation.zip $PSYSTEM/system/media/bootanimation.zip
+chmod 644 $PSYSTEM/system/media/bootanimation.zip
+chown root:root $PSYSTEM/system/media/bootanimation.zip
+setfattr -h -n security.selinux -v u:object_r:system_file:s0 $PSYSTEM/system/media/bootanimation.zip
 
 cp -Raf $SVENDOR/app/FingerprintExtensionService/FingerprintExtensionService.apk $PVENDOR/app/FingerprintExtensionService/FingerprintExtensionService.apk
 cp -Raf $SVENDOR/framework/com.fingerprints.extension.jar $PVENDOR/framework/com.fingerprints.extension.jar
