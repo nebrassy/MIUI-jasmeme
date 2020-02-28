@@ -248,7 +248,7 @@ sed -i "124 i \
 124 i \    # Wifi firmware reload path
 124 i \    chown wifi wifi /sys/module/wlan/parameters/fwpath" $PVENDOR/etc/init/hw/init.target.rc
 
-ROMVERSION=$(grep ro.system.build.version.incremental= /mnt/systemn7/system/build.prop | sed "s/ro.system.build.version.incremental=//g"; )
+ROMVERSION=$(grep ro.system.build.version.incremental= $PSYSTEM/system/build.prop | sed "s/ro.system.build.version.incremental=//g"; )
 sed -i "s%DATE%$(date +%d/%m/%Y)%g
 s/ROMVERSION/$ROMVERSION/g" $OUTP/zip/META-INF/com/google/android/updater-script
 
