@@ -180,7 +180,7 @@ source $CURRENTDIR/buildbootimage.sh
 #setfattr -h -n security.selinux -v u:object_r:system_file:s0 $PSYSTEM/system/addon.d
 #chmod 755 $PSYSTEM/system/addon.d
 
-cp -Rafv $FILESbootctl $PSYSTEM/system/bin/
+cp -Rafv $FILES/bootctl $PSYSTEM/system/bin/
 chmod 755 $PSYSTEM/system/bin/bootctl
 setfattr -h -n security.selinux -v u:object_r:system_file:s0 $PSYSTEM/system/bin/bootctl
 
@@ -212,7 +212,7 @@ sed -i "/ro.product.vendor.model=/c\ro.product.vendor.model=Mi A2
 
 
 #VENDOR
-cp -Rafv $FILESfstab.qcom $PVENDOR/etc/
+cp -Rafv $FILES/fstab.qcom $PVENDOR/etc/
 chmod 644 $PVENDOR/etc/fstab.qcom
 setfattr -h -n security.selinux -v u:object_r:vendor_configs_file:s0 $PVENDOR/etc/fstab.qcom
 
@@ -239,7 +239,7 @@ sed -i "42 i \    <hal format=\"hidl\">
 sed -i "280 i \    exec_background u:object_r:system_file:s0 -- /system/bin/bootctl mark-boot-successful" $PVENDOR/etc/init/hw/init.qcom.rc
 
 
-ROMVERSION=$(grep ro.system.build.version.incremental= /mnt/systemn7/system/build.prop | sed "s/ro.system.build.version.incremental=//g"; )
+ROMVERSION=$(grep ro.build.version.incremental= $PSYSTEM/system/build.prop | sed "s/ro.system.build.version.incremental=//g"; )
 sed -i "s%DATE%$(date +%d/%m/%Y)%g
 s/ROMVERSION/$ROMVERSION/g" $OUTP/zip/META-INF/com/google/android/updater-script
 
