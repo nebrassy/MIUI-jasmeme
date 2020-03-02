@@ -1,39 +1,36 @@
- # Requires: android tools, img tools, abootimg, cpio, sdat2img, brotli
- 
+
 SVENDOR=/mnt/vendora2
 SSYSTEM=/mnt/systema2
-PVENDOR=/mnt/vendor6x
-PSYSTEM=/mnt/system6x
-CURRENTUSER=nebras30
-SOURCEROM=/home/$CURRENTUSER/aicp9
-SD2IMG=/home/$CURRENTUSER/dev/sdat2img.py
+PVENDOR=/mnt/vendorport
+PSYSTEM=/mnt/systemport
+CURRENTUSER=$4
+SOURCEROM=$3
 SCRIPTDIR=$(readlink -f "$0")
 CURRENTDIR=$(dirname "$SCRIPTDIR")
 FILES=$CURRENTDIR/files
-PORTZIP=/home/$CURRENTUSER/dev/xiaomi.eu*
-STOCKZIP=/home/$CURRENTUSER/dev/jasmine*
+PORTZIP=$1
+STOCKTAR=$2
 OUTP=$CURRENTDIR/out
+TOOLS=$CURRENTDIR/tools
 
 mkdir $OUTP
 cp -Raf $CURRENTDIR/zip $OUTP/
 
-unzip $PORTZIP boot.img system.transfer.list vendor.transfer.list system.new.dat.br vendor.new.dat.br
-tar --wildcards -xf $STOCKZIP */images/vendor.img */images/system.img
-mv jasmine_global_images*/images/vendor.img vendor.img
-mv jasmine_global_images*/images/system.img system.img
+unzip -d $OUTP $PORTZIP boot.img system.transfer.list vendor.transfer.list system.new.dat.br vendor.new.dat.br
+tar --wildcards -xf $STOCKTAR */images/vendor.img */images/system.img
+mv jasmine_global_images*/images/vendor.img $OUTP/vendor.img
+mv jasmine_global_images*/images/system.img $OUTP/system.img
 rm -rf jasmine_global_images*
  
  
-mv boot.img 6xboot.img
-simg2img system.img systema2.img
-simg2img vendor.img vendora2.img
-#brotli --verbose --decompress --input system.new.dat.br --output system.new.dat
-brotli -j -v -d system.new.dat.br
-#brotli --verbose --decompress --input vendor.new.dat.br --output vendor.new.dat
-brotli -j -v -d vendor.new.dat.br
-$SD2IMG system.transfer.list system.new.dat system6x.img
-$SD2IMG vendor.transfer.list vendor.new.dat vendor6x.img
-rm system.new.dat.br vendor.new.dat.br vendor.img system.img system.new.dat vendor.new.dat system.transfer.list vendor.transfer.list
+mv $OUTP/boot.img $OUTP/bootport.img
+simg2img $OUTP/system.img $OUTP/systema2.img
+simg2img $OUTP/vendor.img $OUTP/vendora2.img
+brotli -j -v -d $OUTP/system.new.dat.br -o $OUTP/system.new.dat
+brotli -j -v -d $OUTP/vendor.new.dat.br -o $OUTP/vendor.new.dat
+$TOOLS/sdat2img/sdat2img.py $OUTP/system.transfer.list $OUTP/system.new.dat $OUTP/systemport.img
+$TOOLS/sdat2img/sdat2img.py $OUTP/vendor.transfer.list $OUTP/vendor.new.dat $OUTP/vendorport.img
+rm $OUTP/system.new.dat.br $OUTP/vendor.new.dat.br $OUTP/vendor.img $OUTP/system.img $OUTP/system.new.dat $OUTP/vendor.new.dat $OUTP/system.transfer.list $OUTP/vendor.transfer.list
 
 
 
@@ -42,10 +39,10 @@ mkdir $PSYSTEM
 mkdir $PVENDOR
 mkdir $SVENDOR
 mkdir $SSYSTEM
-mount -o rw,noatime system6x.img $PSYSTEM
-mount -o rw,noatime vendor6x.img $PVENDOR
-mount -o rw,noatime systema2.img $SSYSTEM
-mount -o rw,noatime vendora2.img $SVENDOR
+mount -o rw,noatime $OUTP/systemport.img $PSYSTEM
+mount -o rw,noatime $OUTP/vendorport.img $PVENDOR
+mount -o rw,noatime $OUTP/systema2.img $SSYSTEM
+mount -o rw,noatime $OUTP/vendora2.img $SVENDOR
 
 cd $PSYSTEM
 mkdir $PSYSTEM/system
@@ -55,10 +52,10 @@ ls | grep -v system | xargs mv -t system
 cd $CURRENTDIR
 
 
-mkdir tmp
-cp 6xboot.img tmp/
-cd tmp
-abootimg -x 6xboot.img
+mkdir $OUTP/tmp
+cp $OUTP/bootport.img $OUTP/tmp/
+cd $OUTP/tmp
+abootimg -x bootport.img
 mv initrd.img initrd.gz
 gunzip initrd.gz
 mkdir rd
@@ -66,10 +63,10 @@ cd rd
 cpio -m -i < ../initrd
 cd ..
 cp -Raf rd/* $PSYSTEM/
-cd ..
-rm -rf tmp
+cd $CURRENTDIR
+rm -rf $OUTP/tmp
 rm -rf $PSYSTEM/cache
-cp -Rafv $SSYSTEM/cache $PSYSTEM/
+cp -af $SSYSTEM/cache $PSYSTEM/
 
 chown -hR root:root $PSYSTEM/*
 
@@ -173,22 +170,26 @@ chmod 644 $PSYSTEM/verity_key
 
 
 #BUILD BOOT IMAGE
-source $CURRENTDIR/buildbootimage.sh
+PATCHDATE=$(sudo grep ro.build.version.security_patch= $PSYSTEM/system/build.prop | sed "s/ro.build.version.security_patch=//g"; )
+if [[ -z $PATCHDATE ]]
+then
+echo "failed to find security patch date, aborting" && exit
+fi
+su -c "$CURRENTDIR/buildbootimage.sh $PATCHDATE $SOURCEROM $OUTP $CURRENTDIR" $CURRENTUSER
 
+mkdir $PSYSTEM/system/addon.d
+setfattr -h -n security.selinux -v u:object_r:system_file:s0 $PSYSTEM/system/addon.d
+chmod 755 $PSYSTEM/system/addon.d
 
-#mkdir $PSYSTEM/system/addon.d
-#setfattr -h -n security.selinux -v u:object_r:system_file:s0 $PSYSTEM/system/addon.d
-#chmod 755 $PSYSTEM/system/addon.d
-
-cp -Rafv $FILES/bootctl $PSYSTEM/system/bin/
+cp -f $FILES/bootctl $PSYSTEM/system/bin/
 chmod 755 $PSYSTEM/system/bin/bootctl
 setfattr -h -n security.selinux -v u:object_r:system_file:s0 $PSYSTEM/system/bin/bootctl
 
-cp -Raf $SSYSTEM/system/lib/vndk-28/android.hardware.boot@1.0.so $PSYSTEM/system/lib/vndk-28/android.hardware.boot@1.0.so
-cp -Raf $SSYSTEM/system/lib64/vndk-28/android.hardware.boot@1.0.so $PSYSTEM/system/lib64/vndk-28/android.hardware.boot@1.0.so
-cp -Raf $SSYSTEM/system/lib64/android.hardware.boot@1.0.so $PSYSTEM/system/lib64/android.hardware.boot@1.0.so
+cp -af $SSYSTEM/system/lib/vndk-28/android.hardware.boot@1.0.so $PSYSTEM/system/lib/vndk-28/android.hardware.boot@1.0.so
+cp -af $SSYSTEM/system/lib64/vndk-28/android.hardware.boot@1.0.so $PSYSTEM/system/lib64/vndk-28/android.hardware.boot@1.0.so
+cp -af $SSYSTEM/system/lib64/android.hardware.boot@1.0.so $PSYSTEM/system/lib64/android.hardware.boot@1.0.so
 
-cp -Raf $SVENDOR/etc/MIUI_DualCamera_watermark.png $PVENDOR/etc/MIUI_DualCamera_watermark.png
+cp -af $SVENDOR/etc/MIUI_DualCamera_watermark.png $PVENDOR/etc/MIUI_DualCamera_watermark.png
 
 rm -rf $PSYSTEM/system/priv-app/Updater
 
@@ -212,17 +213,17 @@ sed -i "/ro.product.vendor.model=/c\ro.product.vendor.model=Mi A2
 
 
 #VENDOR
-cp -Rafv $FILES/fstab.qcom $PVENDOR/etc/
+cp -f $FILES/fstab.qcom $PVENDOR/etc/
 chmod 644 $PVENDOR/etc/fstab.qcom
 setfattr -h -n security.selinux -v u:object_r:vendor_configs_file:s0 $PVENDOR/etc/fstab.qcom
 
 
-cp -Rafv $SVENDOR/bin/hw/android.hardware.boot@1.0-service $PVENDOR/bin/hw/android.hardware.boot@1.0-service
-cp -Rafv $SVENDOR/etc/init/android.hardware.boot@1.0-service.rc $PVENDOR/etc/init/android.hardware.boot@1.0-service.rc
-cp -Rafv $SVENDOR/lib/hw/bootctrl.sdm660.so $PVENDOR/lib/hw/bootctrl.sdm660.so
-cp -Rafv $SVENDOR/lib/hw/android.hardware.boot@1.0-impl.so $PVENDOR/lib/hw/android.hardware.boot@1.0-impl.so
-cp -Rafv $SVENDOR/lib64/hw/bootctrl.sdm660.so $PVENDOR/lib64/hw/bootctrl.sdm660.so
-cp -Rafv $SVENDOR/lib64/hw/android.hardware.boot@1.0-impl.so $PVENDOR/lib64/hw/android.hardware.boot@1.0-impl.so
+cp -af $SVENDOR/bin/hw/android.hardware.boot@1.0-service $PVENDOR/bin/hw/android.hardware.boot@1.0-service
+cp -af $SVENDOR/etc/init/android.hardware.boot@1.0-service.rc $PVENDOR/etc/init/android.hardware.boot@1.0-service.rc
+cp -af $SVENDOR/lib/hw/bootctrl.sdm660.so $PVENDOR/lib/hw/bootctrl.sdm660.so
+cp -af $SVENDOR/lib/hw/android.hardware.boot@1.0-impl.so $PVENDOR/lib/hw/android.hardware.boot@1.0-impl.so
+cp -af $SVENDOR/lib64/hw/bootctrl.sdm660.so $PVENDOR/lib64/hw/bootctrl.sdm660.so
+cp -af $SVENDOR/lib64/hw/android.hardware.boot@1.0-impl.so $PVENDOR/lib64/hw/android.hardware.boot@1.0-impl.so
 
 
 sed -i "42 i \    <hal format=\"hidl\">
@@ -239,7 +240,7 @@ sed -i "42 i \    <hal format=\"hidl\">
 sed -i "280 i \    exec_background u:object_r:system_file:s0 -- /system/bin/bootctl mark-boot-successful" $PVENDOR/etc/init/hw/init.qcom.rc
 
 
-ROMVERSION=$(grep ro.build.version.incremental= $PSYSTEM/system/build.prop | sed "s/ro.system.build.version.incremental=//g"; )
+ROMVERSION=$(grep ro.build.version.incremental= $PSYSTEM/system/build.prop | sed "s/ro.build.version.incremental=//g"; )
 sed -i "s%DATE%$(date +%d/%m/%Y)%g
 s/ROMVERSION/$ROMVERSION/g" $OUTP/zip/META-INF/com/google/android/updater-script
 
@@ -254,13 +255,24 @@ rmdir $SSYSTEM
 rmdir $SVENDOR
 
 
-mv vendor6x.img $OUTP/zip/vendor_new.img
-mv system6x.img $OUTP/zip/system_new.img
+img2simg $OUTP/systemport.img $OUTP/sparsesystem.img
+rm $OUTP/systemport.img
+$TOOLS/img2sdat/img2sdat.py -v 4 -o $OUTP/zip -p system $OUTP/sparsesystem.img
+rm $OUTP/sparsesystem.img
+img2simg $OUTP/vendorport.img $OUTP/sparsevendor.img
+rm $OUTP/vendorport.img
+$TOOLS/img2sdat/img2sdat.py -v 4 -o $OUTP/zip -p vendor $OUTP/sparsevendor.img
+rm $OUTP/sparsevendor.img
+brotli -j -v -q 6 $OUTP/zip/system.new.dat
+brotli -j -v -q 6 $OUTP/zip/vendor.new.dat
+
 
 cd $OUTP/zip
 zip -ry $OUTP/MIUI_11_jasmine_sprout_$ROMVERSION.zip *
 cd $CURRENTDIR
+rm -rf $OUTP/zip
+chown -hR $CURRENTUSER:$CURRENTUSER $OUTP
 
-rm systema2.img
-rm vendora2.img
-rm 6xboot.img
+rm $OUTP/systema2.img
+rm $OUTP/vendora2.img
+rm $OUTP/bootport.img
