@@ -13,7 +13,9 @@ STOCKTAR=$2
 OUTP=$CURRENTDIR/out
 TOOLS=$CURRENTDIR/tools
 
+rm -rf $OUTP
 mkdir $OUTP
+chown $CURRENTUSER:$CURRENTUSER $OUTP
 cp -Raf $CURRENTDIR/zip $OUTP/
 
 unzip -d $OUTP $PORTZIP system.transfer.list vendor.transfer.list system.new.dat.br vendor.new.dat.br
