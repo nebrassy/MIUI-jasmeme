@@ -158,16 +158,47 @@ chmod 644 $PSYSTEM/system/media/bootanimation.zip
 chown root:root $PSYSTEM/system/media/bootanimation.zip
 setfattr -h -n security.selinux -v u:object_r:system_file:s0 $PSYSTEM/system/media/bootanimation.zip
 
-cp -af $SVENDOR/app/FingerprintExtensionService/FingerprintExtensionService.apk $PVENDOR/app/FingerprintExtensionService/FingerprintExtensionService.apk
-cp -af $SVENDOR/framework/com.fingerprints.extension.jar $PVENDOR/framework/com.fingerprints.extension.jar
-cp -af $SVENDOR/lib64/hw/fingerprint.fpc.default.so $PVENDOR/lib64/hw/fingerprint.fpc.default.so
-cp -af $SVENDOR/lib64/hw/fingerprint.goodix.default.so $PVENDOR/lib64/hw/fingerprint.goodix.default.so
-cp -af $SVENDOR/lib64/vendor.qti.hardware.fingerprint@1.0.so $PVENDOR/lib64/vendor.qti.hardware.fingerprint@1.0.so
-cp -af $SVENDOR/lib64/libvendor.goodix.hardware.fingerprint@1.0-service.so $PVENDOR/lib64/libvendor.goodix.hardware.fingerprint@1.0-service.so
-cp -af $SVENDOR/lib64/libvendor.goodix.hardware.fingerprint@1.0.so $PVENDOR/lib64/libvendor.goodix.hardware.fingerprint@1.0.so
-cp -af $SVENDOR/lib64/com.fingerprints.extension@1.0.so $PVENDOR/lib64/com.fingerprints.extension@1.0.so
-cp -af $SVENDOR/lib64/libgf_ca.so $PVENDOR/lib64/libgf_ca.so
-cp -af $SVENDOR/lib64/libgf_hal.so $PVENDOR/lib64/libgf_hal.so
+
+cp -af $FILES/fingerprint/app/FingerprintExtensionService/FingerprintExtensionService.apk $PVENDOR/app/FingerprintExtensionService/FingerprintExtensionService.apk
+setfattr -h -n security.selinux -v u:object_r:vendor_app_file:s0 $PVENDOR/app/FingerprintExtensionService/FingerprintExtensionService.apk
+chmod 644 $PVENDOR/app/FingerprintExtensionService/FingerprintExtensionService.apk
+chown -hR root:root $PVENDOR/app/FingerprintExtensionService/FingerprintExtensionService.apk
+cp -af $FILES/fingerprint/framework/com.fingerprints.extension.jar $PVENDOR/framework/com.fingerprints.extension.jar
+setfattr -h -n security.selinux -v u:object_r:vendor_framework_file:s0 $PVENDOR/framework/com.fingerprints.extension.jar
+chmod 644 $PVENDOR/framework/com.fingerprints.extension.jar
+chown -hR root:root $PVENDOR/framework/com.fingerprints.extension.jar
+cp -af $FILES/fingerprint/lib64/hw/fingerprint.fpc.default.so $PVENDOR/lib64/hw/fingerprint.fpc.default.so
+setfattr -h -n security.selinux -v u:object_r:vendor_file:s0 $PVENDOR/lib64/hw/fingerprint.fpc.default.so
+chmod 644 $PVENDOR/lib64/hw/fingerprint.fpc.default.so
+chown -hR root:root $PVENDOR/lib64/hw/fingerprint.fpc.default.so
+cp -af $FILES/fingerprint/lib64/hw/fingerprint.goodix.default.so $PVENDOR/lib64/hw/fingerprint.goodix.default.so
+setfattr -h -n security.selinux -v u:object_r:vendor_file:s0 $PVENDOR/lib64/hw/fingerprint.goodix.default.so
+chmod 644 $PVENDOR/lib64/hw/fingerprint.goodix.default.so
+chown -hR root:root $PVENDOR/lib64/hw/fingerprint.goodix.default.so
+cp -af $FILES/fingerprint//lib64/vendor.qti.hardware.fingerprint@1.0.so $PVENDOR/lib64/vendor.qti.hardware.fingerprint@1.0.so
+setfattr -h -n security.selinux -v u:object_r:vendor_file:s0 $PVENDOR/lib64/vendor.qti.hardware.fingerprint@1.0.so
+chmod 644 $PVENDOR/lib64/vendor.qti.hardware.fingerprint@1.0.so
+chown -hR root:root $PVENDOR/lib64/vendor.qti.hardware.fingerprint@1.0.so
+cp -af $FILES/fingerprint/lib64/libvendor.goodix.hardware.fingerprint@1.0-service.so $PVENDOR/lib64/libvendor.goodix.hardware.fingerprint@1.0-service.so
+setfattr -h -n security.selinux -v u:object_r:vendor_file:s0 $PVENDOR/lib64/libvendor.goodix.hardware.fingerprint@1.0-service.so
+chmod 644 $PVENDOR/lib64/libvendor.goodix.hardware.fingerprint@1.0-service.so
+chown -hR root:root $PVENDOR/lib64/libvendor.goodix.hardware.fingerprint@1.0-service.so
+cp -af $FILES/fingerprint/lib64/libvendor.goodix.hardware.fingerprint@1.0.so $PVENDOR/lib64/libvendor.goodix.hardware.fingerprint@1.0.so
+setfattr -h -n security.selinux -v u:object_r:vendor_file:s0 $PVENDOR/lib64/libvendor.goodix.hardware.fingerprint@1.0.so
+chmod 644 $PVENDOR/lib64/libvendor.goodix.hardware.fingerprint@1.0.so
+chown -hR root:root $PVENDOR/lib64/libvendor.goodix.hardware.fingerprint@1.0.so
+cp -af $FILES/fingerprint/lib64/com.fingerprints.extension@1.0.so $PVENDOR/lib64/com.fingerprints.extension@1.0.so
+setfattr -h -n security.selinux -v u:object_r:vendor_file:s0 $PVENDOR/lib64/com.fingerprints.extension@1.0.so
+chmod 644 $PVENDOR/lib64/com.fingerprints.extension@1.0.so
+chown -hR root:root $PVENDOR/lib64/com.fingerprints.extension@1.0.so
+cp -af $FILES/fingerprint/lib64/libgf_ca.so $PVENDOR/lib64/libgf_ca.so
+setfattr -h -n security.selinux -v u:object_r:vendor_file:s0 $PVENDOR/lib64/libgf_ca.so
+chmod 644 $PVENDOR/lib64/libgf_ca.so
+chown -hR root:root $PVENDOR/lib64/libgf_ca.so
+cp -af $FILES/fingerprint/lib64/libgf_hal.so $PVENDOR/lib64/libgf_hal.so
+setfattr -h -n security.selinux -v u:object_r:vendor_file:s0 $PVENDOR/lib64/libgf_hal.so
+chmod 644 $PVENDOR/lib64/libgf_hal.so
+chown -hR root:root $PVENDOR/lib64/libgf_hal.so
 
 cp -af $SSYSTEM/system/usr/keylayout/uinput-fpc.kl $PSYSTEM/system/usr/keylayout/uinput-fpc.kl
 cp -af $SSYSTEM/system/usr/idc/uinput-fpc.idc $PSYSTEM/system/usr/idc/uinput-fpc.idc
