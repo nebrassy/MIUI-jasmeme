@@ -177,7 +177,7 @@ cp -af $FILES/fingerprint/lib64/hw/fingerprint.goodix.default.so $PVENDOR/lib64/
 setfattr -h -n security.selinux -v u:object_r:vendor_file:s0 $PVENDOR/lib64/hw/fingerprint.goodix.default.so
 chmod 644 $PVENDOR/lib64/hw/fingerprint.goodix.default.so
 chown -hR root:root $PVENDOR/lib64/hw/fingerprint.goodix.default.so
-cp -af $FILES/fingerprint//lib64/vendor.qti.hardware.fingerprint@1.0.so $PVENDOR/lib64/vendor.qti.hardware.fingerprint@1.0.so
+cp -af $FILES/fingerprint/lib64/vendor.qti.hardware.fingerprint@1.0.so $PVENDOR/lib64/vendor.qti.hardware.fingerprint@1.0.so
 setfattr -h -n security.selinux -v u:object_r:vendor_file:s0 $PVENDOR/lib64/vendor.qti.hardware.fingerprint@1.0.so
 chmod 644 $PVENDOR/lib64/vendor.qti.hardware.fingerprint@1.0.so
 chown -hR root:root $PVENDOR/lib64/vendor.qti.hardware.fingerprint@1.0.so
