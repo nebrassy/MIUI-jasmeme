@@ -5,7 +5,7 @@ set_metadata_recursive("/tmp/install/bin", "uid", 0, "gid", 0, "dmode", 0755, "f
 run_program("/tmp/install/bin/backuptool.sh", "backup", "/dev/block/bootdevice/by-name/system", "ext4");
 ui_print(" ");
 ui_print(" ");
-ui_print("           MIUI 11");
+ui_print("           MIUI 12");
 ui_print(" ");
 ui_print("           ROMVERSION");
 ui_print(" ");

@@ -200,7 +200,7 @@ mv $PSYSTEM/system/etc/device_features/wayne.xml $PSYSTEM/system/etc/device_feat
 sed -i "/persist.camera.HAL3.enabled=/c\persist.camera.HAL3.enabled=1
 /persist.vendor.camera.HAL3.enabled=/c\persist.vendor.camera.HAL3.enabled=1
 /ro.product.model=/c\ro.product.model=Mi A2
-/ro.build.id=/c\ro.build.id=MIUI 11 by Nebrassy
+/ro.build.id=/c\ro.build.id=MIUI 12 by Nebrassy
 /persist.vendor.camera.exif.model=/c\persist.vendor.camera.exif.model=Mi A2
 /ro.product.name=/c\ro.product.name=jasmine
 /ro.product.device=/c\ro.product.device=jasmine_sprout
@@ -276,7 +276,7 @@ brotli -j -v -q 6 $OUTP/zip/vendor.new.dat
 
 
 cd $OUTP/zip
-zip -ry $OUTP/MIUI_11_jasmine_sprout_$ROMVERSION.zip *
+zip -ry $OUTP/MIUI_12_jasmine_sprout_$ROMVERSION.zip *
 cd $CURRENTDIR
 rm -rf $OUTP/zip
 chown -hR $CURRENTUSER:$CURRENTUSER $OUTP
