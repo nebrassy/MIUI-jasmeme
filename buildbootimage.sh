@@ -15,7 +15,7 @@ sed -i "/PLATFORM_SECURITY_PATCH :=/c\      PLATFORM_SECURITY_PATCH := $PATCHDAT
 
 git -C $SOURCEROM/kernel/xiaomi/sdm660 remote add nebrassy https://github.com/nebrassy/android_kernel_xiaomi_sdm660.git
 git -C $SOURCEROM/kernel/xiaomi/sdm660 fetch nebrassy
-git -C $SOURCEROM/kernel/xiaomi/sdm660 checkout nebrassy/MIUI-r38-n7
+git -C $SOURCEROM/kernel/xiaomi/sdm660 checkout nebrassy/MIUI-common-cam
 
 sed -i "$ i\BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive" $SOURCEROM/device/xiaomi/sdm660-common/BoardConfigCommon.mk
 
