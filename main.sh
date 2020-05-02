@@ -161,25 +161,12 @@ cp -af $SVENDOR/lib/libvidhance_gyro.so $PVENDOR/lib/libvidhance_gyro.so
 cp -af $SVENDOR/lib/libvidhance.so $PVENDOR/lib/
 
 
-cp -f $FILES/camera/lib/libmmcamera* $PVENDOR/lib/
-chmod 644 $PVENDOR/lib/libmmcamera*
-chown -hR root:root $PVENDOR/lib/libmmcamera*
-setfattr -h -n security.selinux -v u:object_r:vendor_file:s0 $PVENDOR/lib/libmmcamera*
+cp -af $SVENDOR/lib/libmmcamera* $PVENDOR/lib/
 
-cp -f $FILES/camera/lib64/libmmcamera* $PVENDOR/lib64/
-chmod 644 $PVENDOR/lib64/libmmcamera*
-chown -hR root:root $PVENDOR/lib64/libmmcamera*
-setfattr -h -n security.selinux -v u:object_r:vendor_file:s0 $PVENDOR/lib64/libmmcamera*
+cp -af $SVENDOR/lib64/libmmcamera* $PVENDOR/lib64/
 
-cp -f $FILES/camera/lib/hw/camera.sdm660.so $PVENDOR/lib/hw/
-chmod 644 $PVENDOR/lib/hw/camera.sdm660.so
-chown -hR root:root $PVENDOR/lib/hw/camera.sdm660.so
-setfattr -h -n security.selinux -v u:object_r:vendor_file:s0 $PVENDOR/lib/hw/camera.sdm660.so
+cp -f $SVENDOR/lib/hw/camera.sdm660.so $PVENDOR/lib/hw/
 
-cp -f $FILES/camera/lib/camera.sdm660_shim.so $PVENDOR/lib/
-chmod 644 $PVENDOR/lib/camera.sdm660_shim.so
-chown root:root $PVENDOR/lib/camera.sdm660_shim.so
-setfattr -h -n security.selinux -v u:object_r:vendor_file:s0 $PVENDOR/lib/camera.sdm660_shim.so
 
 #BOOTANIMATION
 cp -f $FILES/bootanimation.zip $PSYSTEM/system/media/bootanimation.zip
@@ -284,7 +271,12 @@ sed -i "452 i \    exec_background u:object_r:system_file:s0 -- /system/bin/boot
 sed -i "124 i \
 
 124 i \    # Wifi firmware reload path
-124 i \    chown wifi wifi /sys/module/wlan/parameters/fwpath" $PVENDOR/etc/init/hw/init.target.rc
+124 i \    chown wifi wifi /sys/module/wlan/parameters/fwpath
+124 i \
+
+124 i \    # DT2W node
+124 i \    chmod 0660 /sys/touchpanel/double_tap
+124 i \    chown system system /sys/touchpanel/double_tap" $PVENDOR/etc/init/hw/init.target.rc
 
 ROMVERSION=$(grep ro.system.build.version.incremental= $PSYSTEM/system/build.prop | sed "s/ro.system.build.version.incremental=//g"; )
 sed -i "s%DATE%$(date +%d/%m/%Y)%g
