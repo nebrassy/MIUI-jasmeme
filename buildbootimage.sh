@@ -16,9 +16,10 @@ sed -i "/PLATFORM_SECURITY_PATCH :=/c\      PLATFORM_SECURITY_PATCH := $PATCHDAT
 
 git -C $SOURCEROM/kernel/xiaomi/sdm660 remote add nebrassy https://github.com/nebrassy/android_kernel_xiaomi_sdm660.git
 git -C $SOURCEROM/kernel/xiaomi/sdm660 fetch nebrassy
-git -C $SOURCEROM/kernel/xiaomi/sdm660 checkout nebrassy/MIUI-r38
+git -C $SOURCEROM/kernel/xiaomi/sdm660 checkout nebrassy/MIUI-common
 
 sed -i "$ i\BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive" $SOURCEROM/device/xiaomi/sdm660-common/BoardConfigCommon.mk
+sed -i "s/TARGET_KERNEL_CONFIG := jasmine-perf_defconfig/TARGET_KERNEL_CONFIG := wayne_defconfig/g" $SOURCEROM/device/xiaomi/jasmine_sprout/BoardConfig.mk
 
 git -C $SOURCEROM/bootable/recovery remote add aicp https://github.com/AICP/bootable_recovery.git
 git -C $SOURCEROM/bootable/recovery fetch aicp
@@ -32,6 +33,7 @@ mka bootimage
 
 cp -f out/target/product/jasmine_sprout/boot.img $OUTP/zip/boot.img
 git -C $SOURCEROM/device/xiaomi/sdm660-common reset --hard
+git -C $SOURCEROM/device/xiaomi/jasmine_sprout reset --hard
 git -C $SOURCEROM/build/core reset --hard
 
 cd $CURRENTDIR

@@ -241,6 +241,12 @@ sed -i "42 i \    <hal format=\"hidl\">
 
 sed -i "280 i \    exec_background u:object_r:system_file:s0 -- /system/bin/bootctl mark-boot-successful" $PVENDOR/etc/init/hw/init.qcom.rc
 
+sed -i "124 i \
+
+124 i \    # DT2W node
+124 i \    chmod 0660 /sys/touchpanel/double_tap
+124 i \    chown system system /sys/touchpanel/double_tap" $PVENDOR/etc/init/hw/init.target.rc
+
 
 ROMVERSION=$(grep ro.build.version.incremental= $PSYSTEM/system/build.prop | sed "s/ro.build.version.incremental=//g"; )
 sed -i "s%DATE%$(date +%d/%m/%Y)%g
