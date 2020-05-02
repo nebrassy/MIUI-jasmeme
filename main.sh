@@ -70,7 +70,7 @@ mv $PVENDOR/etc/device_features/lavender.xml $PVENDOR/etc/device_features/wayne.
 sed -i "/persist.camera.HAL3.enabled=/c\persist.camera.HAL3.enabled=1
 /persist.vendor.camera.HAL3.enabled=/c\persist.vendor.camera.HAL3.enabled=1
 /ro.product.model=/c\ro.product.model=Mi 6x
-/ro.build.id=/c\ro.build.id=MIUI 11 by Nebrassy
+/ro.build.id=/c\ro.build.id=MIUI 12 by Nebrassy
 /persist.vendor.camera.exif.model=/c\persist.vendor.camera.exif.model=Mi 6x
 /ro.product.name=/c\ro.product.name=wayne
 /ro.product.device=/c\ro.product.device=wayne
@@ -308,7 +308,7 @@ brotli -j -v -q 6 $OUTP/zip/system.new.dat
 brotli -j -v -q 6 $OUTP/zip/vendor.new.dat
 
 cd $OUTP/zip
-zip -ry $OUTP/10_MIUI_11_wayne_$ROMVERSION.zip *
+zip -ry $OUTP/10_MIUI_12_wayne_$ROMVERSION.zip *
 cd $CURRENTDIR
 rm -rf $OUTP/zip
 chown -hR $CURRENTUSER:$CURRENTUSER $OUTP
