@@ -1,4 +1,3 @@
-
 SVENDOR=/mnt/vendora2
 SSYSTEM=/mnt/systema2
 PVENDOR=/mnt/vendorport
@@ -89,6 +88,11 @@ sed -i "/persist.camera.HAL3.enabled=/c\persist.camera.HAL3.enabled=1
 /ro.product.system.model=/c\ro.product.system.model=Mi A2
 /ro.product.system.name=/c\ro.product.system.name=jasmine
 /ro.miui.notch=/c\ro.miui.notch=0
+/sys.paper_mode_max_level=/c\sys.paper_mode_max_level=32
+\$ i sys.tianma_nt36672_offset=12
+\$ i sys.tianma_nt36672_length=46
+\$ i sys.jdi_nt36672_offset=9
+\$ i sys.jdi_nt36672_length=45
 /persist.vendor.camera.model=/c\persist.vendor.camera.model=Mi A2" $PSYSTEM/system/build.prop
 
 
@@ -224,6 +228,8 @@ sed -i "/support_dual_sd_card/c\    <bool name=\"support_dual_sd_card\">true<\/b
 /bool name=\"is_xiaomi\">/c\    <bool name=\"is_xiaomi\">true<\/bool>
 /is_hongmi/c\    <bool name=\"is_hongmi\">false<\/bool>
 /is_redmi/c\    <bool name=\"is_redmi\">false<\/bool>
+/paper_mode_max_level/c\    <float name=\"paper_mode_max_level\">32.0<\/float>
+/paper_mode_min_level/c\    <float name=\"paper_mode_min_level\">0.0<\/float>
 /is_18x9_ratio_screen/c\    <bool name=\"is_18x9_ratio_screen\">true<\/bool>" $PSYSTEM/system/etc/device_features/jasmine_sprout.xml
 
 
@@ -234,6 +240,8 @@ sed -i "/support_dual_sd_card/c\    <bool name=\"support_dual_sd_card\">true<\/b
 /bool name=\"is_xiaomi\">/c\    <bool name=\"is_xiaomi\">true<\/bool>
 /is_hongmi/c\    <bool name=\"is_hongmi\">false<\/bool>
 /is_redmi/c\    <bool name=\"is_redmi\">false<\/bool>
+/paper_mode_max_level/c\    <float name=\"paper_mode_max_level\">32.0<\/float>
+/paper_mode_min_level/c\    <float name=\"paper_mode_min_level\">0.0<\/float>
 /is_18x9_ratio_screen/c\    <bool name=\"is_18x9_ratio_screen\">true<\/bool>" $PVENDOR/etc/device_features/jasmine_sprout.xml
 
 
