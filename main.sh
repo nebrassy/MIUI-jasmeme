@@ -1,4 +1,3 @@
-
 SVENDOR=/mnt/vendora2
 SSYSTEM=/mnt/systema2
 PVENDOR=/mnt/vendorport
@@ -69,17 +68,22 @@ mv $PVENDOR/etc/device_features/lavender.xml $PVENDOR/etc/device_features/wayne.
 
 sed -i "/persist.camera.HAL3.enabled=/c\persist.camera.HAL3.enabled=1
 /persist.vendor.camera.HAL3.enabled=/c\persist.vendor.camera.HAL3.enabled=1
-/ro.product.model=/c\ro.product.model=Mi 6x
+/ro.product.model=/c\ro.product.model=MI 6X
 /ro.build.id=/c\ro.build.id=MIUI 12 by Nebrassy
-/persist.vendor.camera.exif.model=/c\persist.vendor.camera.exif.model=Mi 6x
+/persist.vendor.camera.exif.model=/c\persist.vendor.camera.exif.model=MI 6X
 /ro.product.name=/c\ro.product.name=wayne
 /ro.product.device=/c\ro.product.device=wayne
 /ro.build.product=/c\ro.build.product=wayne
 /ro.product.system.device=/c\ro.product.system.device=wayne
-/ro.product.system.model=/c\ro.product.system.model=Mi 6x
+/ro.product.system.model=/c\ro.product.system.model=MI 6X
 /ro.product.system.name=/c\ro.product.system.name=wayne
 /ro.miui.notch=/c\ro.miui.notch=0
-/persist.vendor.camera.model=/c\persist.vendor.camera.model=Mi 6x" $PSYSTEM/system/build.prop
+/sys.paper_mode_max_level=/c\sys.paper_mode_max_level=32
+\$ i sys.tianma_nt36672_offset=12
+\$ i sys.tianma_nt36672_length=46
+\$ i sys.jdi_nt36672_offset=9
+\$ i sys.jdi_nt36672_length=45
+/persist.vendor.camera.model=/c\persist.vendor.camera.model=MI 6X" $PSYSTEM/system/build.prop
 
 
 sed -i "/ro.build.characteristics=/c\ro.build.characteristics=nosdcard" $PSYSTEM/system/product/build.prop
@@ -87,13 +91,13 @@ sed -i "/ro.build.characteristics=/c\ro.build.characteristics=nosdcard" $PSYSTEM
 
 
 
-sed -i "/ro.product.vendor.model=/c\ro.product.vendor.model=Mi 6x
+sed -i "/ro.product.vendor.model=/c\ro.product.vendor.model=MI 6X
 /ro.product.vendor.name=/c\ro.product.vendor.name=wayne
 /ro.product.vendor.device=/c\ro.product.vendor.device=wayne" $PVENDOR/build.prop
 
 
 sed -i "/ro.product.odm.device=/c\ro.product.odm.device=wayne
-/ro.product.odm.model=/c\ro.product.odm.model=Mi 6x
+/ro.product.odm.model=/c\ro.product.odm.model=MI 6X
 /ro.product.odm.device=/c\ro.product.odm.device=wayne
 /ro.product.odm.name=/c\ro.product.odm.name=wayne" $PVENDOR/odm/etc/build.prop
 
@@ -228,6 +232,8 @@ sed -i "/support_dual_sd_card/c\    <bool name=\"support_dual_sd_card\">true<\/b
 /bool name=\"is_xiaomi\">/c\    <bool name=\"is_xiaomi\">true<\/bool>
 /is_hongmi/c\    <bool name=\"is_hongmi\">false<\/bool>
 /is_redmi/c\    <bool name=\"is_redmi\">false<\/bool>
+/paper_mode_max_level/c\    <float name=\"paper_mode_max_level\">32.0<\/float>
+/paper_mode_min_level/c\    <float name=\"paper_mode_min_level\">0.0<\/float>
 /is_18x9_ratio_screen/c\    <bool name=\"is_18x9_ratio_screen\">true<\/bool>" $PSYSTEM/system/etc/device_features/wayne.xml
 
 
@@ -238,6 +244,8 @@ sed -i "/support_dual_sd_card/c\    <bool name=\"support_dual_sd_card\">true<\/b
 /bool name=\"is_xiaomi\">/c\    <bool name=\"is_xiaomi\">true<\/bool>
 /is_hongmi/c\    <bool name=\"is_hongmi\">false<\/bool>
 /is_redmi/c\    <bool name=\"is_redmi\">false<\/bool>
+/paper_mode_max_level/c\    <float name=\"paper_mode_max_level\">32.0<\/float>
+/paper_mode_min_level/c\    <float name=\"paper_mode_min_level\">0.0<\/float>
 /is_18x9_ratio_screen/c\    <bool name=\"is_18x9_ratio_screen\">true<\/bool>" $PVENDOR/etc/device_features/wayne.xml
 
 
