@@ -12,7 +12,9 @@ STOCKTAR=$2
 OUTP=$CURRENTDIR/out
 TOOLS=$CURRENTDIR/tools
 
-rm -rf $OUTP
+set -e
+
+rm -rf $OUTP || true
 mkdir $OUTP
 chown $CURRENTUSER:$CURRENTUSER $OUTP
 cp -Raf $CURRENTDIR/zip $OUTP/
@@ -31,14 +33,14 @@ brotli -j -v -d $OUTP/system.new.dat.br -o $OUTP/system.new.dat
 brotli -j -v -d $OUTP/vendor.new.dat.br -o $OUTP/vendor.new.dat
 $TOOLS/sdat2img/sdat2img.py $OUTP/system.transfer.list $OUTP/system.new.dat $OUTP/systemport.img
 $TOOLS/sdat2img/sdat2img.py $OUTP/vendor.transfer.list $OUTP/vendor.new.dat $OUTP/vendorport.img
-rm $OUTP/system.new.dat.br $OUTP/vendor.new.dat.br $OUTP/vendor.img $OUTP/system.img $OUTP/system.new.dat $OUTP/vendor.new.dat $OUTP/system.transfer.list $OUTP/vendor.transfer.list
+rm $OUTP/vendor.img $OUTP/system.img $OUTP/system.new.dat $OUTP/vendor.new.dat $OUTP/system.transfer.list $OUTP/vendor.transfer.list
 
 
-unalias cp
-mkdir $PSYSTEM
-mkdir $PVENDOR
-mkdir $SVENDOR
-mkdir $SSYSTEM
+unalias cp || true
+mkdir $PSYSTEM || true
+mkdir $PVENDOR || true
+mkdir $SVENDOR || true
+mkdir $SSYSTEM || true
 mount -o rw,noatime $OUTP/systemport.img $PSYSTEM
 mount -o rw,noatime $OUTP/vendorport.img $PVENDOR
 mount -o rw,noatime $OUTP/systema2.img $SSYSTEM
@@ -238,8 +240,8 @@ sed -i "479 c\        <version>1.0</version>
 489d" $PVENDOR/etc/vintf/manifest.xml
 
 
-rm -rf $PSYSTEM/system/etc/firmware
-cp -Raf $SSYSTEM/system/etc/firmware/* $PVENDOR/firmware/
+rm -rf $PSYSTEM/system/etc/firmware || true
+cp -Raf $SSYSTEM/system/etc/firmware/* $PVENDOR/firmware/ || true
 
 
 cp -f $OUTP/libwifi-hal64.so $PVENDOR/lib64/libwifi-hal.so
