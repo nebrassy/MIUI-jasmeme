@@ -3,6 +3,7 @@ SOURCEROM=$2
 OUTP=$3
 CURRENTDIR=$4
 
+set -e
 cd $SOURCEROM
 
 source ~/.profile
@@ -14,7 +15,7 @@ repo sync --force-sync
 sed -i "/PLATFORM_SECURITY_PATCH :=/c\      PLATFORM_SECURITY_PATCH := $PATCHDATE" $SOURCEROM/build/core/version_defaults.mk
 
 
-git -C $SOURCEROM/kernel/xiaomi/sdm660 remote add nebrassy https://github.com/nebrassy/android_kernel_xiaomi_sdm660.git
+git -C $SOURCEROM/kernel/xiaomi/sdm660 remote add nebrassy https://github.com/nebrassy/android_kernel_xiaomi_sdm660.git || true
 git -C $SOURCEROM/kernel/xiaomi/sdm660 fetch nebrassy
 git -C $SOURCEROM/kernel/xiaomi/sdm660 checkout nebrassy/MIUI-common
 

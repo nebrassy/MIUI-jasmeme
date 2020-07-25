@@ -13,7 +13,9 @@ STOCKTAR=$2
 OUTP=$CURRENTDIR/out
 TOOLS=$CURRENTDIR/tools
 
-rm -rf $OUTP
+set -e
+
+rm -rf $OUTP || true
 mkdir $OUTP
 chown $CURRENTUSER:$CURRENTUSER $OUTP
 cp -Raf $CURRENTDIR/zip $OUTP/
@@ -32,15 +34,15 @@ brotli -j -v -d $OUTP/system.new.dat.br -o $OUTP/system.new.dat
 brotli -j -v -d $OUTP/vendor.new.dat.br -o $OUTP/vendor.new.dat
 $TOOLS/sdat2img/sdat2img.py $OUTP/system.transfer.list $OUTP/system.new.dat $OUTP/systemport.img
 $TOOLS/sdat2img/sdat2img.py $OUTP/vendor.transfer.list $OUTP/vendor.new.dat $OUTP/vendorport.img
-rm $OUTP/system.new.dat.br $OUTP/vendor.new.dat.br $OUTP/vendor.img $OUTP/system.img $OUTP/system.new.dat $OUTP/vendor.new.dat $OUTP/system.transfer.list $OUTP/vendor.transfer.list
+rm $OUTP/vendor.img $OUTP/system.img $OUTP/system.new.dat $OUTP/vendor.new.dat $OUTP/system.transfer.list $OUTP/vendor.transfer.list
 
 
 
-unalias cp
-mkdir $PSYSTEM
-mkdir $PVENDOR
-mkdir $SVENDOR
-mkdir $SSYSTEM
+unalias cp || true
+mkdir $PSYSTEM || true
+mkdir $PVENDOR || true
+mkdir $SVENDOR || true
+mkdir $SSYSTEM || true
 mount -o rw,noatime $OUTP/systemport.img $PSYSTEM
 mount -o rw,noatime $OUTP/vendorport.img $PVENDOR
 mount -o rw,noatime $OUTP/systema2.img $SSYSTEM
@@ -73,102 +75,102 @@ cp -af $SSYSTEM/cache $PSYSTEM/
 chown -hR root:root $PSYSTEM/*
 
 
-setfattr -h -n security.selinux -v u:object_r:cgroup:s0 $PSYSTEM/acct
-setfattr -h -n security.selinux -v u:object_r:rootfs:s0 $PSYSTEM/bin
-setfattr -h -n security.selinux -v u:object_r:bt_firmware_file:s0 $PSYSTEM/bt_firmware
-setfattr -h -n security.selinux -v u:object_r:rootfs:s0 $PSYSTEM/bugreports
-setfattr -h -n security.selinux -v u:object_r:cache_file:s0 $PSYSTEM/cache
-setfattr -h -n security.selinux -v u:object_r:rootfs:s0 $PSYSTEM/charger
-setfattr -h -n security.selinux -v u:object_r:rootfs:s0 $PSYSTEM/config
-setfattr -h -n security.selinux -v u:object_r:rootfs:s0 $PSYSTEM/d
-setfattr -h -n security.selinux -v u:object_r:rootfs:s0 $PSYSTEM/cust
-setfattr -h -n security.selinux -v u:object_r:system_data_file:s0 $PSYSTEM/data
-setfattr -h -n security.selinux -v u:object_r:rootfs:s0 $PSYSTEM/default.prop
-setfattr -h -n security.selinux -v u:object_r:device:s0 $PSYSTEM/dev
-setfattr -h -n security.selinux -v u:object_r:adsprpcd_file:s0 $PSYSTEM/dsp
-setfattr -h -n security.selinux -v u:object_r:rootfs:s0 $PSYSTEM/etc
-setfattr -h -n security.selinux -v u:object_r:firmware_file:s0 $PSYSTEM/firmware
-setfattr -h -n security.selinux -v u:object_r:init_exec:s0 $PSYSTEM/init
-setfattr -h -n security.selinux -v u:object_r:rootfs:s0 $PSYSTEM/*.rc
-setfattr -h -n security.selinux -v u:object_r:rootfs:s0 $PSYSTEM/init.miui.post_boot.sh
-setfattr -h -n security.selinux -v u:object_r:rootfs:s0 $PSYSTEM/lost+found
-setfattr -h -n security.selinux -v u:object_r:tmpfs:s0 $PSYSTEM/mnt
-setfattr -h -n security.selinux -v u:object_r:vendor_file:s0 $PSYSTEM/odm
-setfattr -h -n security.selinux -v u:object_r:oemfs:s0 $PSYSTEM/oem
-setfattr -h -n security.selinux -v u:object_r:mnt_vendor_file:s0 $PSYSTEM/persist
-setfattr -h -n security.selinux -v u:object_r:rootfs:s0 $PSYSTEM/proc
-setfattr -h -n security.selinux -v u:object_r:system_file:s0 $PSYSTEM/product
-setfattr -h -n security.selinux -v u:object_r:rootfs:s0 $PSYSTEM/res
-setfattr -h -n security.selinux -v u:object_r:rootfs:s0 $PSYSTEM/sbin
-setfattr -h -n security.selinux -v u:object_r:rootfs:s0 $PSYSTEM/sdcard
-setfattr -h -n security.selinux -v u:object_r:storage_file:s0 $PSYSTEM/storage
-setfattr -h -n security.selinux -v u:object_r:sysfs:s0 $PSYSTEM/sys
-setfattr -h -n security.selinux -v u:object_r:vendor_file:s0 $PSYSTEM/vendor
-setfattr -h -n security.selinux -v u:object_r:rootfs:s0 $PSYSTEM/verity_key
-setfattr -h -n security.selinux -v u:object_r:vendor_app_file:s0 $PSYSTEM/odm/app
-setfattr -h -n security.selinux -v u:object_r:vendor_file:s0 $PSYSTEM/odm/bin
-setfattr -h -n security.selinux -v u:object_r:vendor_configs_file:s0 $PSYSTEM/odm/etc
-setfattr -h -n security.selinux -v u:object_r:vendor_file:s0 $PSYSTEM/odm/firmware
-setfattr -h -n security.selinux -v u:object_r:vendor_framework_file:s0 $PSYSTEM/odm/framework
-setfattr -h -n security.selinux -v u:object_r:vendor_file:s0 $PSYSTEM/odm/lib
-setfattr -h -n security.selinux -v u:object_r:vendor_file:s0 $PSYSTEM/odm/lib64
-setfattr -h -n security.selinux -v u:object_r:vendor_overlay_file:s0 $PSYSTEM/odm/overlay
-setfattr -h -n security.selinux -v u:object_r:vendor_app_file:s0 $PSYSTEM/odm/priv-app
-setfattr -h -n security.selinux -v u:object_r:rootfs:s0 $PSYSTEM/res/images
-setfattr -h -n security.selinux -v u:object_r:rootfs:s0 $PSYSTEM/res/images/charger
-setfattr -h -n security.selinux -v u:object_r:rootfs:s0 $PSYSTEM/res/images/charger/*
-setfattr -h -n security.selinux -v u:object_r:rootfs:s0 $PSYSTEM/sbin/*
-setfattr -h -n security.selinux -v u:object_r:rootfs:s0 $PSYSTEM/init.miui.early_boot.sh
+setfattr -h -n security.selinux -v u:object_r:cgroup:s0 $PSYSTEM/acct || true
+setfattr -h -n security.selinux -v u:object_r:rootfs:s0 $PSYSTEM/bin || true
+setfattr -h -n security.selinux -v u:object_r:bt_firmware_file:s0 $PSYSTEM/bt_firmware || true
+setfattr -h -n security.selinux -v u:object_r:rootfs:s0 $PSYSTEM/bugreports || true
+setfattr -h -n security.selinux -v u:object_r:cache_file:s0 $PSYSTEM/cache || true
+setfattr -h -n security.selinux -v u:object_r:rootfs:s0 $PSYSTEM/charger || true
+setfattr -h -n security.selinux -v u:object_r:rootfs:s0 $PSYSTEM/config || true
+setfattr -h -n security.selinux -v u:object_r:rootfs:s0 $PSYSTEM/d || true
+setfattr -h -n security.selinux -v u:object_r:rootfs:s0 $PSYSTEM/cust || true
+setfattr -h -n security.selinux -v u:object_r:system_data_file:s0 $PSYSTEM/data || true
+setfattr -h -n security.selinux -v u:object_r:rootfs:s0 $PSYSTEM/default.prop || true
+setfattr -h -n security.selinux -v u:object_r:device:s0 $PSYSTEM/dev || true
+setfattr -h -n security.selinux -v u:object_r:adsprpcd_file:s0 $PSYSTEM/dsp || true
+setfattr -h -n security.selinux -v u:object_r:rootfs:s0 $PSYSTEM/etc || true
+setfattr -h -n security.selinux -v u:object_r:firmware_file:s0 $PSYSTEM/firmware || true
+setfattr -h -n security.selinux -v u:object_r:init_exec:s0 $PSYSTEM/init || true
+setfattr -h -n security.selinux -v u:object_r:rootfs:s0 $PSYSTEM/*.rc || true
+setfattr -h -n security.selinux -v u:object_r:rootfs:s0 $PSYSTEM/init.miui.post_boot.sh || true
+setfattr -h -n security.selinux -v u:object_r:rootfs:s0 $PSYSTEM/lost+found || true
+setfattr -h -n security.selinux -v u:object_r:tmpfs:s0 $PSYSTEM/mnt || true
+setfattr -h -n security.selinux -v u:object_r:vendor_file:s0 $PSYSTEM/odm || true
+setfattr -h -n security.selinux -v u:object_r:oemfs:s0 $PSYSTEM/oem || true
+setfattr -h -n security.selinux -v u:object_r:mnt_vendor_file:s0 $PSYSTEM/persist || true
+setfattr -h -n security.selinux -v u:object_r:rootfs:s0 $PSYSTEM/proc || true
+setfattr -h -n security.selinux -v u:object_r:system_file:s0 $PSYSTEM/product || true
+setfattr -h -n security.selinux -v u:object_r:rootfs:s0 $PSYSTEM/res || true
+setfattr -h -n security.selinux -v u:object_r:rootfs:s0 $PSYSTEM/sbin || true
+setfattr -h -n security.selinux -v u:object_r:rootfs:s0 $PSYSTEM/sdcard || true
+setfattr -h -n security.selinux -v u:object_r:storage_file:s0 $PSYSTEM/storage || true
+setfattr -h -n security.selinux -v u:object_r:sysfs:s0 $PSYSTEM/sys || true
+setfattr -h -n security.selinux -v u:object_r:vendor_file:s0 $PSYSTEM/vendor || true
+setfattr -h -n security.selinux -v u:object_r:rootfs:s0 $PSYSTEM/verity_key || true
+setfattr -h -n security.selinux -v u:object_r:vendor_app_file:s0 $PSYSTEM/odm/app || true
+setfattr -h -n security.selinux -v u:object_r:vendor_file:s0 $PSYSTEM/odm/bin || true
+setfattr -h -n security.selinux -v u:object_r:vendor_configs_file:s0 $PSYSTEM/odm/etc || true
+setfattr -h -n security.selinux -v u:object_r:vendor_file:s0 $PSYSTEM/odm/firmware || true
+setfattr -h -n security.selinux -v u:object_r:vendor_framework_file:s0 $PSYSTEM/odm/framework || true
+setfattr -h -n security.selinux -v u:object_r:vendor_file:s0 $PSYSTEM/odm/lib || true
+setfattr -h -n security.selinux -v u:object_r:vendor_file:s0 $PSYSTEM/odm/lib64 || true
+setfattr -h -n security.selinux -v u:object_r:vendor_overlay_file:s0 $PSYSTEM/odm/overlay || true
+setfattr -h -n security.selinux -v u:object_r:vendor_app_file:s0 $PSYSTEM/odm/priv-app || true
+setfattr -h -n security.selinux -v u:object_r:rootfs:s0 $PSYSTEM/res/images || true
+setfattr -h -n security.selinux -v u:object_r:rootfs:s0 $PSYSTEM/res/images/charger || true
+setfattr -h -n security.selinux -v u:object_r:rootfs:s0 $PSYSTEM/res/images/charger/* || true
+setfattr -h -n security.selinux -v u:object_r:rootfs:s0 $PSYSTEM/sbin/* || true
+setfattr -h -n security.selinux -v u:object_r:rootfs:s0 $PSYSTEM/init.miui.early_boot.sh || true
 
-chmod 755 $PSYSTEM/acct
-chmod 644 $PSYSTEM/bin
-chmod 644 $PSYSTEM/bt_firmware
-chmod 644 $PSYSTEM/bugreports
-chmod 644 $PSYSTEM/cache
-chmod 644 $PSYSTEM/charger
-chmod 555 $PSYSTEM/config
-chmod 644 $PSYSTEM/cust
-chmod 644 $PSYSTEM/d
-chmod 771 $PSYSTEM/data
-chmod 600 $PSYSTEM/default.prop
-chmod 755 $PSYSTEM/dev
-chmod 644 $PSYSTEM/dsp
-chmod 644 $PSYSTEM/etc
-chmod 644 $PSYSTEM/firmware
-chmod 750 $PSYSTEM/init
-chmod 750 $PSYSTEM/init.environ.rc
-chmod 750 $PSYSTEM/init.miui.cust.rc
-chmod 750 $PSYSTEM/init.miui.early_boot.sh
-chmod 750 $PSYSTEM/init.miui.post_boot.sh
-chmod 750 $PSYSTEM/init.miui.google_revenue_share.rc
-chmod 750 $PSYSTEM/init.miui.google_revenue_share_v2.rc
-chmod 750 $PSYSTEM/init.miui.nativedebug.rc
-chmod 750 $PSYSTEM/init.miui.rc
-chmod 750 $PSYSTEM/init.rc
-chmod 750 $PSYSTEM/init.recovery.hardware.rc
-chmod 750 $PSYSTEM/init.recovery.qcom.rc
-chmod 750 $PSYSTEM/init.usb.configfs.rc
-chmod 750 $PSYSTEM/init.usb.rc
-chmod 750 $PSYSTEM/init.zygote32.rc
-chmod 750 $PSYSTEM/init.zygote64_32.rc
-chmod 755 $PSYSTEM/mnt
-chmod 755 $PSYSTEM/odm
-chmod 644 $PSYSTEM/odm/*
-chmod 755 $PSYSTEM/oem
-chmod 644 $PSYSTEM/persist
-chmod 755 $PSYSTEM/proc
-chmod 644 $PSYSTEM/product
-chmod 755 $PSYSTEM/res
-chmod 755 $PSYSTEM/res/images
-chmod 755 $PSYSTEM/res/images/charger
-chmod 644 $PSYSTEM/res/images/charger/*
-chmod -R 750 $PSYSTEM/sbin
-chmod 644 $PSYSTEM/sdcard
-chmod 751 $PSYSTEM/storage
-chmod 755 $PSYSTEM/sys
-chmod 644 $PSYSTEM/ueventd.rc
-chmod 755 $PSYSTEM/vendor
-chmod 644 $PSYSTEM/verity_key
+chmod 755 $PSYSTEM/acct || true
+chmod 644 $PSYSTEM/bin || true
+chmod 644 $PSYSTEM/bt_firmware || true
+chmod 644 $PSYSTEM/bugreports || true
+chmod 644 $PSYSTEM/cache || true
+chmod 644 $PSYSTEM/charger || true
+chmod 555 $PSYSTEM/config || true
+chmod 644 $PSYSTEM/cust || true
+chmod 644 $PSYSTEM/d || true
+chmod 771 $PSYSTEM/data || true
+chmod 600 $PSYSTEM/default.prop || true
+chmod 755 $PSYSTEM/dev || true
+chmod 644 $PSYSTEM/dsp || true
+chmod 644 $PSYSTEM/etc || true
+chmod 644 $PSYSTEM/firmware || true
+chmod 750 $PSYSTEM/init || true
+chmod 750 $PSYSTEM/init.environ.rc || true
+chmod 750 $PSYSTEM/init.miui.cust.rc || true
+chmod 750 $PSYSTEM/init.miui.early_boot.sh || true
+chmod 750 $PSYSTEM/init.miui.post_boot.sh || true
+chmod 750 $PSYSTEM/init.miui.google_revenue_share.rc || true
+chmod 750 $PSYSTEM/init.miui.google_revenue_share_v2.rc || true
+chmod 750 $PSYSTEM/init.miui.nativedebug.rc || true
+chmod 750 $PSYSTEM/init.miui.rc || true
+chmod 750 $PSYSTEM/init.rc || true
+chmod 750 $PSYSTEM/init.recovery.hardware.rc || true
+chmod 750 $PSYSTEM/init.recovery.qcom.rc || true
+chmod 750 $PSYSTEM/init.usb.configfs.rc || true
+chmod 750 $PSYSTEM/init.usb.rc || true
+chmod 750 $PSYSTEM/init.zygote32.rc || true
+chmod 750 $PSYSTEM/init.zygote64_32.rc || true
+chmod 755 $PSYSTEM/mnt || true
+chmod 755 $PSYSTEM/odm || true
+chmod 644 $PSYSTEM/odm/* || true
+chmod 755 $PSYSTEM/oem || true
+chmod 644 $PSYSTEM/persist || true
+chmod 755 $PSYSTEM/proc || true
+chmod 644 $PSYSTEM/product || true
+chmod 755 $PSYSTEM/res || true
+chmod 755 $PSYSTEM/res/images || true
+chmod 755 $PSYSTEM/res/images/charger || true
+chmod 644 $PSYSTEM/res/images/charger/* || true
+chmod -R 750 $PSYSTEM/sbin || true
+chmod 644 $PSYSTEM/sdcard || true
+chmod 751 $PSYSTEM/storage || true
+chmod 755 $PSYSTEM/sys || true
+chmod 644 $PSYSTEM/ueventd.rc || true
+chmod 755 $PSYSTEM/vendor || true
+chmod 644 $PSYSTEM/verity_key || true
 
 
 #BUILD BOOT IMAGE
